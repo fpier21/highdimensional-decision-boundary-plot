@@ -270,6 +270,7 @@ class DBPlot(BaseEstimator):
             print(
                 "Failed to find initial decision boundary. Retrying... If this keeps happening, increasing the acceptance threshold might help. Also, make sure the classifier is able to find a point with 0.5 prediction probability (usually requires an even number of estimators/neighbors/etc)."
             )
+            self.acceptance_threshold += 0.03
             return self.fit(X, y, training_indices)
 
         # step 3. look for decision boundary points between already known db
@@ -376,6 +377,7 @@ class DBPlot(BaseEstimator):
         background_resolution=100,
         scatter_size_scale=1.0,
         legend=True,
+        annotate=None,
     ):
 
         """Plots the dataset and the identified decision boundary in 2D.
@@ -493,14 +495,10 @@ class DBPlot(BaseEstimator):
         )
 
         # label data points with their indices
-        for i in range(len(self.X2d)):
-            plt.text(
-                self.X2d[i, 0] + (self.X2d_xmax - self.X2d_xmin) * 0.5e-2,
-                self.X2d[i, 1] + (self.X2d_ymax - self.X2d_ymin) * 0.5e-2,
-                str(i),
-                size=8,
-            )
-
+        if annotate:
+            step = int(len(self.X2d)*annotate) + 1
+            for i, txt in enumerate(range(self.X2d.shape[0])[:step:]):    
+                plt.text(self.X2d[i, 0], self.X2d[i, 1], txt, fontsize='xx-small')
         if legend:
             plt.legend(
                 [
