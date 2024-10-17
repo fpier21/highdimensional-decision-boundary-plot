@@ -410,6 +410,8 @@ class DBPlot(BaseEstimator):
         legend : boolean, optional (default=False)
             Whether to display a legend
 
+        annotate : float, optional (default=None)
+            If not None, it specifies the percentage of points to annotate as a float: range from 0 to 1.0 
         Returns
         -------
         plt : The matplotlib.pyplot or axis object which has been passed in, after
